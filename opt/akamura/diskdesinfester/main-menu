@@ -1,0 +1,192 @@
+#!/bin/bash
+
+#**************************************************************************
+#   App:         Disk Desinfester                                         *
+#   Version:     1.0                                                      *
+#   Author:      Matia Zanella                                            *
+#   Description: Disk Desinfester, aimed to be the first and most         *
+#                complete linux maintenance program.                      *
+#   Github:      https://github.com/akamura/                              *
+#                                                                         *
+#   Icon Author:        Kanin Abhiromsawat @Eucalyp                       *
+#   Icon Author URL:    https://www.flaticon.com/authors/eucalyp          *
+#   Icon Author Social: https://www.facebook.com/kanin.abhiromsawat       *
+#                                                                         *
+#   Copyright (C) 2024 Matia Zanella                                      *
+#   https://www.matiazanella.com                                          *
+#                                                                         *
+#   This program is free software; you can redistribute it and/or modify  *
+#   it under the terms of the GNU General Public License as published by  *
+#   the Free Software Foundation; either version 2 of the License, or     *
+#   (at your option) any later version.                                   *
+#                                                                         *
+#   This program is distributed in the hope that it will be useful,       *
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#   GNU General Public License for more details.                          *
+#                                                                         *
+#   You should have received a copy of the GNU General Public License     *
+#   along with this program; if not, write to the                         *
+#   Free Software Foundation, Inc.,                                       *
+#   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+#**************************************************************************
+
+# ==================================================
+# Change Terminal geometry and clear the screen
+# ==================================================
+printf '\e[8;48;150t'
+clear
+
+echo "                         
+      .*%%#-              :#@@@#=...*@+                          
+      %@-.%@.            =@%. -*%@@%@%.                          
+      %@-*@#            :@%        .                             
+  .+##@@@#:           :=#@@%#=                                   
+  #@-:@@@           +@@*#@*:#@=                                  
+  %@-#@%@#          :-  .#@%@#.+##*=.                            
+  *@@#: +@#                .  =@#:=#@* =##*-.                    
+  :@%    -@@-    .+*#*=       .@@.    -@%:=#@# -*#*=.            
+   +@+     +@%. -@:.= =@.      -@%     %@-    .@@:=#@%           
+    *@*      :  *@=   +@-       %@:    :@%     #@=               
+     =@%:     +  **+@+#+ .      +@+     #@=    .@@               
+      .*@%-  %@%-  :-: .=@%.    =@*     -@*     *@+              
+        .=- .---+#%#*#%@@@@%  **=-+*****+-=*++=-=%#              
+           .=**+- .#@@@@@@@@- *@  %@@@@@+ -@@@@@% .%#+-          
+          -%::= =%  %@@@@@@*. *+ .@@@@@@. *@@@@@* :@@@%  *-      
+          *@-   #@- *@@@#=. -#- :. *@@@*  %@@@@@- +@@@%  @@  =   
+          .#++#-*+  ::. .-*@*  *@@. #@= .. +@@@%  #@@@%  @@  @:  
+            .--:  =*: +@@@@: -@@@@+ :. +@@: +@+ .: =@@%  @@   |>  
+             :**%@@@+ =@@%. *@@@@@-  :%@@@# .. =@@- =@%  @%  :.  
+              *@@@@@%  %@: *@@@@@@  +@@@@@+  .#@@@% .@%  - .*+   
+               +@@@@@# .+ :@@@@@@- +@@@@@@. =@@@@@* -#=  -#@*    
+                :#@@@@#.  =@@@@@% .@@@@@@= =@@@@%#.   -*@@@=     
+                  :#@@@@*. -#*+=: .======  --:.  .-+%@@@@*.      
+                    .+%@@@=  -===========+++**#%@@@@@@%+.        
+                        :=. -%@@@@@@@@@@@@@@@@@@@@@*=."
+echo
+
+
+# ==================================================
+# ANSI COLOR CODES
+# ==================================================
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[1;36m'
+GRAY='\033[1;37m'
+NC='\033[0m'
+BOLD='\033[1m'
+
+
+# ==================================================
+# Request privileges elevation
+# ==================================================
+echo -e "${CYAN}Let's elevate some privileges to deeply check your File System.${NC}"
+echo -e "${CYAN}You know the difference between you and me? I make this looks good. Trust me.${NC}"
+echo
+if ! sudo -v; then
+    echo -e "${YELLOW}Oh dear! I need the golden key to do my job! If you're feeling doubtful, feel free to inspect my code or give the competitors a ring! They may charge less, but they're less effective!${NC}"
+    echo
+    exit 1
+fi
+# Check if the symbolic link already exists
+if [ ! -f "/usr/bin/diskdesinfester" ]; then
+    sudo ln -s "/opt/akamura/diskdesinfester/main-menu" "/usr/bin/diskdesinfester"
+fi
+
+# ==================================================
+# Building program menu in two columns
+# ==================================================
+while true; do
+for i in {1..1}; do echo; done #separator
+echo -e "${CYAN}Disk Desinfester${NC}"
+column1=(
+    "1. System update plus fix broken dependencies"
+    "2. Disk usage check"
+    "3. CPU Load and RAM check"
+    "4. Run a full maintenance"
+    "5. List failed system services"
+    "6. Exit"
+)
+column2=(
+    "x. Log analysis and rotation (under dev)"
+    "x. List failed system services (under dev)"
+    "x. Find and remove unused Docker img and vol (under dev)"
+    "x. Rootkit analysis and desinfesting (under dev)"
+    ""
+)
+
+# Function to calculate the visible length of a string
+visible_length() {
+    echo -e "$1" | sed 's/\x1b\[[0-9;]*m//g' | wc -m | tr -d ' '
+}
+
+# Function to find the maximum length in a column
+max_length() {
+    local max_len=0
+    for item in "$@"; do
+        local len=$(visible_length "$item")
+        (( len > max_len )) && max_len=$len
+    done
+    echo $max_len
+}
+
+# Calculate the widths of the two columns
+col_width1=$(max_length "${column1[@]}")
+col_width2=$(max_length "${column2[@]}")
+
+# Print the menu items in two columns
+echo
+echo "+$(head -c $((col_width1 + col_width2 + 5)) < /dev/zero | tr '\0' '-')+"
+for ((i = 0; i < ${#column1[@]} || i < ${#column2[@]}; i++)); do
+    col1_item=${column1[i]:-" "}
+    col2_item=${column2[i]:-" "}
+    printf "| %-${col_width1}b | %-${col_width2}b |\n" "$col1_item" "$col2_item"
+done
+echo "+$(head -c $((col_width1 + col_width2 + 5)) < /dev/zero | tr '\0' '-')+"
+echo
+
+# Footer with copyright information
+echo -e "(C) $(date +%Y) Made with love by Matia Zanella | https://github.com/akamura | https://www.matiazanella.com"
+echo "Enjoying the program? Feel free to fuel its development with a coffee ☕ or a beer 🍺!"
+echo "Your support is greatly appreciated. You can treat me here: https://www.paypal.com/paypalme/matiazanella/"
+echo
+
+# Read user input
+read -p "Choose an option to start the program: " choice
+
+# Process user input
+  case $choice in
+      1)
+          echo "Performing System Update."
+          ./system-update.sh
+          ;;
+      2)
+          echo "Performing Disk usage check."
+          ./disk-usage.sh
+          ;;
+      3)
+          echo "Performing CPU and RAM check."
+          ./cpu-memory.sh
+          ;;
+      4)
+          echo "Executing Full Maintenance."
+          ./diskdesinfester.sh
+          ;;
+      5)
+          echo "Listing failed system services."
+          ./failed-system-services.sh
+          ;;
+      6)
+          echo
+          echo -e "${CYAN}Who you gonna call next time? Disk Desinfester!${NC} 🪳"
+          echo
+          exit 0
+          ;;
+      *)
+          echo
+          echo -e "${RED}Oops, that function isn't developed yet. Could you please select a different menu option?${NC}"
+          echo
+          ;;
+  esac
+done

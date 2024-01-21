@@ -1,0 +1,11 @@
+Source: diskdesinfester
+Section: utils
+Priority: optional
+Maintainer: Matia Zanella
+Build-Depends: debhelper (>= 9)
+Version: 1.0
+Homepage: https://github.com/akamura/disk-desinfester
+Package: diskdesinfester
+Architecture: all
+Depends: bash
+Description: Welcome to Disk Desinfester, aimed to be the first and most complete Linux Maintenance Program.

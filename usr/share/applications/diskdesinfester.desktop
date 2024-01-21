@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=/opt/akamura/diskdesinfester/main-menu
+Name=Disk Desinfester
+Icon=/opt/akamura/diskdesinfester/icons/diskdesinfester-icon.png
