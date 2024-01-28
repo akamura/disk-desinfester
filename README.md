@@ -19,6 +19,13 @@ You have the chance to restore your pc performance at it's best without messing 
 To all my Windows-using acquaintances (I hesitate to say friends – we have our differences, mainly everything Microsoft-based), keep an eye out! I might just bring 'Disk Desinfester' to your world of DLL nightmares, registry mazes, and bug-infested file systems. So, if your computer feels more like a bug infested habitat than a workstation, hang tight! A rescue mission is being planned for later this year. Just don't ask me to fix Clippy."
 
 
+## Optimal Experience
+
+To achieve the optimal experience, I highly encourage you to download and install my specially crafted terminal profile. This profile has been meticulously tailored, with a focus on color customization, to ensure a perfect blend of aesthetic appeal and functional excellence.
+
+[Download and Install Terminal Profile](https://github.com/akamura/terminal-profile/)
+
+
 ## Installation
 
 Download the diskdesinfester.deb package or pack yourself from the source code
